@@ -12,6 +12,14 @@ body{
 main{
     flex: 1;
 }
-.szurkeHatter{
+.szurkeHatter, nav li{
     background-color: #dfdfdf;
+}
+nav{
+    height: 100vh;
+}
+li{
+    border-radius: 12px;
+    margin: 5px 0px;
+    padding: 0px 10px;
 }
