@@ -19,14 +19,9 @@ body {
     flex-direction: column;
 }
 
-main {
-    flex: 1;
-}
-
 .szurkeHatter {
-    background-color: #dfdfdf;
+    background-color: #efefef;
 }
-
 *,
 *::before,
 *::after {
@@ -236,9 +231,7 @@ h1 {
     transform: translateY(-6px) rotate(-45deg);
 }
 
-.content {
-    min-width: 0;
-}
+
 
 .topbar {
     height: 80px;
