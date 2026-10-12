@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="css/allMobile.css">
   <title>Roller</title>
 </head>
-
 <body>
   <div id="appView" class="admin" data-testid="admin-dashboard">
     <aside class="sidebar">
@@ -32,20 +31,20 @@
             class="badge warn hidden" id="stockBadge"></span></button>
       </nav>
       <div class="side-foot">
-            <div class="dropdown showOnMobile">
-              <button class="btn dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle pe-2"></i>Profile</button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </div>
+        <div class="dropdown showOnMobile">
+          <button class="btn dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle pe-2"></i>Profile</button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
         <button id="logoutBtn" class="link-line" data-testid="admin-logout-btn"><i
             class="bi bi-box-arrow-right"></i>Kilépés</button>
       </div>
     </aside>
-    <main class="content">
+    <div>
       <header class="topbar hideOnMobile">
         <h1 id="viewTitle">Kezelőpult</h1>
         <div class="text-end">
@@ -53,10 +52,9 @@
             <div class="d-flex justify-content-between ">
               <i class="bi bi-chat-left-dots mt-2"></i>
               <i class="bi bi-bell mx-5 mt-2"></i>
-
               <div class="dropdown">
-               <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle pe-2"></i>Profile</button>
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-person-circle pe-2"></i>Profile</button>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#">Action</a></li>
                   <li><a class="dropdown-item" href="#">Another action</a></li>
@@ -67,10 +65,13 @@
           </div>
         </div>
       </header>
-      <section id="view" class="view"></section>
-    </main>
+      <main>
+       
+      </main>
+    </div>
   </div>
   <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/Roller.js"></script>
   <script src="js/all.js"></script>
 </body>
 
