@@ -62,19 +62,3 @@ function toCapitalize(szoveg) {
     }
     return eredmeny
 }
-//Ai
-async function getAddressBigDataCloud(szoveg) {
-    const parts = szoveg.split(',');
-    const lat = parseFloat(parts[0]);
-    const lon = parseFloat(parts[1]);
-    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        console.log(`${data.locality}`);
-        return `${data.locality}`;
-    } catch (error) {
-        console.error("Error:", error);
-        return "Budapest"
-    }
-}

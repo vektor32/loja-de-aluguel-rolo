@@ -4,6 +4,7 @@ function profilBetoltes() {
         return new Profil("Kiss Anna", "admin", "admin@scooterfleet.hu", "admin123")
     }
     return new Profil(nev, localStorage.getItem("profil_felhNev"), localStorage.getItem("profil_email"), localStorage.getItem("profil_jelszo"))
+    //
 }
 function profilMentes() {
     localStorage.setItem("profil_nev", profil.getNev())

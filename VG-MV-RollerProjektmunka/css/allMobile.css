@@ -28,6 +28,10 @@
     .hideOnMobile {
         display: none;
     }
+    .zserbo{
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
     .sidebar {
         padding: 14px 28px;
         border-right: 0;

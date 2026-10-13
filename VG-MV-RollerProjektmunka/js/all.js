@@ -69,3 +69,42 @@ function initMap() {
         }
     });
 }
+async function getAddressBigDataCloud(szoveg) {
+    const parts = szoveg.split(',');
+    const lat = parseFloat(parts[0]);
+    const lon = parseFloat(parts[1]);
+    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(`${data.locality}`);
+        return `${data.locality}`;
+    } catch (error) {
+        console.error("Error:", error);
+        return "Budapest"
+    }
+}
+async function getCoordinatesFromName(locationName) {
+  const query = encodeURIComponent(`${locationName}, Budapest`);
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}`;
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'ScooterApp/1.0'
+      }
+    });
+    const data = await response.json();
+    if (data && data.length > 0) {
+      const lat = parseFloat(data[0].lat);
+      const lon = parseFloat(data[0].lon);
+      const coordString = `${lat.toFixed(4)}° N, ${lon.toFixed(4)}° E`;
+      console.log(`Coordinates for ${locationName}:`, coordString);
+      return coordString;
+    } else {
+      console.log("Location not found.");
+      return "47.4979° N, 19.0540° E";
+    }
+  } catch (error) {
+    console.error("Error fetching coordinates:", error);
+  }
+}
