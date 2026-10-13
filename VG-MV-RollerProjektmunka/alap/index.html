@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/all.css">
+  <link rel="stylesheet" href="css/allMobile.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <title>Scooterfleet. - Kezelőpult</title>
+</head>
+
+<body>
+  <div id="appView" class="admin" data-testid="admin-dashboard">
+    <aside class="sidebar">
+      <div class="side-head">
+        <a href="index.html" class="logo">ScooterFleet<span>.</span></a>
+        <a class="menu-toggle" id="menuToggle" type="button" aria-label="Menü megnyitása" aria-expanded="false"
+          aria-controls="sideNav" data-testid="admin-menu-toggle"><span></span><span></span><span></span></a>
+      </div>
+      <nav class="side-nav" id="sideNav">
+        <a data-view="dashboard" class="active" data-testid="admin-nav-dashboard" href="index.html"><i
+            class="bi bi-microsoft"></i>Kezelőpult</a>
+        <a data-view="bookings" data-testid="admin-nav-bookings"><i class="bi bi-map"></i>Térkép</a>
+        <a data-view="bookings" data-testid="admin-nav-bookings" href="roller.html"><i class="bi bi-scooter"></i>Járművek</a>
+        <a data-view="calendar" data-testid="admin-nav-calendar" href="utvonal.html"><i class="bi bi-compass"></i>Útvonal
+          tervezés</a>
+        <a data-view="tickets" data-testid="admin-nav-tickets"   href="szerviz.html"><i class="bi bi-wrench-adjustable"></i>Szerviz <span
+            class="badge hidden" id="ticketBadge"></span></a>
+        <a data-view="inventory" data-testid="admin-nav-inventory" data-bs-toggle="modal" data-bs-target="#ertesitesModal"><i class="bi bi-bell"></i>Értesítések <span
+            class="badge warn hidden" id="stockBadge"></span></a>
+      </nav>
+      <div class="side-foot">
+        <div class="dropdown showOnMobile">
+          <button class="btn dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle pe-2"></i><span class="js-profil-nev">Vendég</span></button>
+          <ul class="dropdown-menu">
+            <li data-auth-csak="ki"><a class="dropdown-item" href="#" data-auth="login"><i class="bi bi-person-plus"></i> Bejelentkezés</a></li>
+            <li data-auth-csak="be"><a class="dropdown-item" href="#" data-auth="profile"><i class="bi bi-person-badge"></i> Profilom</a></li>
+            <li data-auth-csak="be"><a class="dropdown-item text-danger" href="#" data-auth="logout"><i class="bi bi-box-arrow-right"></i> Kijelentkezés</a></li>
+          </ul>
+        </div>
+        <a id="logoutBtn" class="link-line hidden" data-auth="logout" data-auth-csak="be" data-testid="admin-logout-btn">
+          <i class="bi bi-box-arrow-right"></i>Kilépés</a>
+      </div>
+    </aside>
+    <div class="tartalom">
+      <header class="topbar hideOnMobile">
+        <h1 id="viewTitle">Kezelőpult</h1>
+        <div class="text-end">
+          <div class="d-inline-flex p-2">
+            <div class="d-flex justify-content-between ">
+              <i class="bi bi-chat-left-dots mt-2"></i>
+              <i class="bi bi-bell mx-5 mt-2" data-bs-toggle="modal" data-bs-target="#ertesitesModal"></i>
+              <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-person-circle pe-2"></i><span class="js-profil-nev">Vendég</span></button>
+                <ul class="dropdown-menu">
+                  <li data-auth-csak="ki"><a class="dropdown-item" href="#" data-auth="login"><i class="bi bi-person-plus"></i> Bejelentkezés</a></li>
+                  <li data-auth-csak="be"><a class="dropdown-item" href="#" data-auth="profile"><i class="bi bi-person-badge"></i> Profilom</a></li>
+                  <li data-auth-csak="be"><a class="dropdown-item text-danger" href="#" data-auth="logout"><i class="bi bi-box-arrow-right"></i> Kijelentkezés</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="szurkeHatter">
+        <section id="view" class="view">
+          <div class="row">
+            <div class="col-lg-4">
+                <div class="card p-3 rounded-4 border-none" style="max-width: 420px;">
+                  <div class="card-body">
+                    <p class="card-subtitle fg-3 pb-4">Összes rollerünk <br><span class="osszes"></span></p>
+                    <div class="card-text">
+                      <div class="d-flex le justify-content-between">
+                        <p><span class="elerheto text-success"></span> <br>Elérhető</p>
+                        <p><span class="tolton text-warning"></span> <br>Töltőn</p>
+                      </div>
+                      <p><span class="alacsonyEnergia text-warning"></span> <br>Alacsony energiaszint</p>
+                      <p><span class="szervizben text-danger"></span> <br>Szervízben</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+              <div id="map"></div>
+            </div>
+          </div>
+        </section>
+        <section class="eredmeny p-5 pt-0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th class="hideOnMobile" scope="col">Model</th>
+                <th scope="col">Töltöttség</th>
+                <th class="hideOnMobile" scope="col">Állapot</th>
+                <th scope="col">Hely</th>
+                <th class="hideOnMobile" scope="col">IdejeAktiv</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalCim" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="loginForm" novalidate>
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="loginModalCim"><i class="bi bi-person-plus me-2"></i>Bejelentkezés</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger d-none" id="lgHiba" role="alert"></div>
+            <div class="mb-3">
+              <label for="lgFelhNev" class="form-label">Felhasználónév</label>
+              <input type="text" class="form-control" id="lgFelhNev" autocomplete="username">
+            </div>
+            <div class="mb-3">
+              <label for="lgJelszo" class="form-label">Jelszó</label>
+              <input type="password" class="form-control" id="lgJelszo" autocomplete="current-password">
+            </div>
+            <p class="small text-secondary mb-0">Demó belépés: <b>admin</b> / <b>admin123</b></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Mégse</button>
+            <button type="submit" class="btn btn-dark">Bejelentkezés</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="profilModal" tabindex="-1" aria-labelledby="profilModalCim" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="profilForm" novalidate>
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="profilModalCim"><i class="bi bi-person-badge me-2"></i>Profilom</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger d-none" id="pfHiba" role="alert"></div>
+            <div class="mb-3">
+              <label for="pfNev" class="form-label">Név</label>
+              <input type="text" class="form-control" id="pfNev" maxlength="60" autocomplete="name">
+            </div>
+            <div class="mb-3">
+              <label for="pfFelhNev" class="form-label">Felhasználónév</label>
+              <input type="text" class="form-control" id="pfFelhNev" maxlength="20" autocomplete="username">
+            </div>
+            <div class="mb-3">
+              <label for="pfEmail" class="form-label">E-mail</label>
+              <input type="email" class="form-control" id="pfEmail" autocomplete="email">
+            </div>
+            <div class="mb-3">
+              <label for="pfJelszo" class="form-label">Új jelszó</label>
+              <input type="password" class="form-control" id="pfJelszo" maxlength="64" autocomplete="new-password">
+              <div class="form-text">Hagyd üresen, ha nem szeretnéd megváltoztatni.</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Mégse</button>
+            <button type="submit" class="btn btn-dark mentes">Mentés</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div class="toast" id="uzenetToast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <i class="bi bi-bell"></i>
+        <strong class="me-auto">Értesítés</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Bezárás"></button>
+      </div>
+      <div class="toast-body" id="uzenetToastSzoveg"></div>
+    </div>
+  </div>
+  <div class="modal fade" id="ertesitesModal" tabindex="-1" aria-labelledby="ertesitesModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Értesítések</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p>Itt jelennek meg a bejovő értesítések...</p>
+        <span class="text-secondary">Ciripp ciripp...</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-bs-dismiss="modal">Bezárás</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/Roller.js"></script>
+  <script src="js/Profil.js"></script>
+  <script src="js/all.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/profilKezeles.js"></script>
+</body>
+</html>
