@@ -30,7 +30,7 @@ class Roller {
         }
     }
     felCsatlakoztatas() {
-        if ((this.getAllapot().toLowerCase() != "töltőn" || this.getAllapot().toLowerCase() != "karbantartás alatt") && this.getToltottseg() != 100) {
+        if ((this.getAllapot().toLowerCase() != "töltőn" && this.getAllapot().toLowerCase() != "karbantartás alatt") && this.getToltottseg() != 100) {
             this.setAllapot("Töltőn")
             this.setToltottseg(100)
             return true
